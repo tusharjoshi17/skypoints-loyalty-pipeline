@@ -12,3 +12,5 @@ lint:
 format:
 	ruff check --fix .
 	ruff format .
+run:
+	python -m skypoints run --input data/input --output data/output
