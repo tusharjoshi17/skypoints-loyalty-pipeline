@@ -10,10 +10,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import date, datetime
-from enum import Enum
+from enum import StrEnum
 
 
-class Severity(str, Enum):
+class Severity(StrEnum):
     ERROR = "ERROR"  # record is quarantined, never reaches a country table
     WARNING = "WARNING"  # record is loaded, issue is reported
 
