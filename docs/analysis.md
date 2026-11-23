@@ -52,9 +52,9 @@ Every design decision in this repo traces back to a finding or assumption below.
 | 11 | AUS.xlsx, row 1 (Mike) | Date of Birth is the text `NULL`, not an empty cell | The text must be treated as a real NULL, not loaded as a value |
 | 12 | AUS.xlsx, row 2 (Jonnathan) | Date of Enrollment is `2021-13-13`: month 13 does not exist | Enrollment is mandatory, so this record must be rejected |
 | 13 | AUS/USA/IND extracts | IDs `1, 2, 3` appear in all three files | IDs are local to each source, not global. They can't be merged with the main feed without a cross-reference. |
-| 14 | USA.xlsx dates | Stored as integers in `MMDDYYYY` order; January lost its leading zero (`1052022`) | `1052022` is ambiguous: 5 Jan or 5 Oct? `1152022`: 15 Jan or 5 Nov? These must be flagged, not guessed silently. |
+| 14 | USA.csv dates | Stored as integers in `MMDDYYYY` order; January lost its leading zero (`1052022`) | `1052022` is ambiguous: 5 Jan or 5 Oct? `1152022`: 15 Jan or 5 Nov? These must be flagged, not guessed silently. |
 | 15 | Different schema per extract | Column names and date formats differ in each file; IND has an extra `Individual or Corporate` column | Each source needs its own mapping onto the common layout, then the same rules apply |
-| 16 | IND.xlsx, row 3 (Sameer) | DOB 1952 (age about 74) | Valid but worth a plausibility check (e.g. flag ages above 120) |
+| 16 | IND.csv, row 3 (Sameer) | DOB 1952 (age about 74) | Valid but worth a plausibility check (e.g. flag ages above 120) |
 
 ## 4. Questions I would ask the data owner
 
