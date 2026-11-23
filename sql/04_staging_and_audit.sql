@@ -196,6 +196,8 @@ CREATE TABLE IF NOT EXISTS AUDIT.DQ_ISSUES
 
     member_id         VARCHAR,
 
+    txn_id            VARCHAR(50),
+
     column_name       VARCHAR(100),
 
     message           VARCHAR,
