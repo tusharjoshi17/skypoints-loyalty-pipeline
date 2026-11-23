@@ -1,0 +1,62 @@
+-- =============================================================================
+-- 12_orchestration.sql
+--
+-- Production orchestration design.
+--
+-- The runnable assessment implementation uses:
+--
+--     make snowflake-run
+--
+-- which executes the version-controlled SQL scripts deterministically through
+-- Snowflake CLI.
+--
+-- The production incremental extension uses:
+--
+--     cloud object storage
+--              |
+--              v
+--          Snowpipe
+--              |
+--              v
+--            RAW
+--              |
+--            Stream
+--              |
+--              v
+--             Task
+--              |
+--       incremental DML
+--              |
+--              v
+--        STAGING / CORE
+--
+-- Tasks should use SYSTEM$STREAM_HAS_DATA in their WHEN clause so warehouse
+-- compute is not started when no change data exists.
+--
+-- Example:
+--
+-- CREATE TASK <member_task>
+--     WAREHOUSE = SKYPOINTS_ETL_WH
+--     SCHEDULE = '1 MINUTE'
+--     WHEN SYSTEM$STREAM_HAS_DATA(
+--         'SKYPOINTS.RAW.MEMBER_LANDING_STREAM'
+--     )
+-- AS
+--     <consume MEMBER_LANDING_STREAM using DML>;
+--
+--
+-- Important:
+--
+-- Merely checking SYSTEM$STREAM_HAS_DATA is insufficient.
+--
+-- The task must consume the stream in DML so its offset advances.
+--
+-- The current reference/demo SQL intentionally performs deterministic
+-- full-batch transformations because the supplied assessment data is tiny and
+-- reproducibility is more valuable than pretending to have production-scale
+-- incremental orchestration.
+--
+-- The same transformation rules are ready to be moved behind stream-consuming
+-- Tasks when the production arrival pattern and service-level requirements are
+-- known.
+-- =============================================================================
